@@ -1,0 +1,301 @@
+<context>
+# Overview
+ExcaliForSofa is a specialized version of Excalidraw focused on creating accurate sofa measurements for custom cover production. The platform bridges the gap between non-technical customers who need to measure their sofas and professional production teams in China who create custom sofa covers. The application enables users to easily trace sofa contours on photos, add precise measurements, and generate standardized production-ready documentation.
+
+# Core Features
+1. **Sofa Photo Integration**: Import and calibrate sofa photos as backgrounds for accurate tracing and measurements.
+
+2. **Specialized Measurement Tools**: Create vector-based measurements with support for different units (inches to 1/8" and cm to 0.1cm) with seamless conversion between them.
+
+3. **Production Template Generation**: Generate standardized PDF templates that include all necessary information for professional production teams.
+
+4. **Measurement Tagging System**: Categorize and label different types of measurements (width, depth, height, seams, zipper locations) for clarity.
+
+5. **Guided Measurement Process**: Step-by-step instructions for customers to ensure accurate measurements.
+
+6. **Collaboration Tools**: Share and communicate about measurements between customers, your team, and production facilities.
+
+7. **Mobile Compatibility**: Allow measurements to be taken on mobile devices directly in customers' homes.
+
+# User Experience
+**User Personas**:
+- **Home Customers**: Non-technical individuals who need custom sofa covers and have limited experience taking measurements.
+- **Customer Service Team**: Staff who help customers verify measurements and prepare production files.
+- **Production Team**: Professional sewers and pattern makers in China who need precise technical specifications.
+
+**Key User Flows**:
+- Customer uploads sofa photo, traces outlines, adds measurements, and shares with the service team
+- Service team reviews measurements, adds production annotations, and generates production templates
+- Production team receives standardized templates with all necessary measurements and specifications
+- Customer and service team can collaborate on measurement revisions if needed
+</context>
+<PRD>
+# Technical Architecture
+
+## System Components
+
+1. **Core Photo-Vector Integration**
+   - Photo upload and management system with background calibration tools
+   - Vector drawing layer optimized for tracing sofa contours
+   - Dynamic image-vector relationship that maintains precision when zooming
+   - Image enhancement tools to improve visibility of sofa details
+
+2. **Measurement System**
+   - Vector-based measurement tools that follow curved surfaces
+   - Dual unit system (imperial and metric) with real-time conversion
+   - Support for fractional inches (down to 1/8") and decimal centimeters (to 0.1cm)
+   - Smart measurement snapping and alignment to ensure accuracy
+   - Automatic error detection for measurement inconsistencies
+   - Measurement database with standard ranges for validation
+
+3. **Template Engine**
+   - Schema for translating vector measurements to production templates
+   - PDF generation with standardized layout for production teams
+   - Multiple view generation (front, sides, top, detail sections)
+   - Automatic dimensions and annotations based on measurements
+   - Custom annotation system for production-specific instructions
+
+4. **Tagging and Annotation System**
+   - Hierarchical tagging system for sofa parts (frame, cushions, armrests, etc.)
+   - Production-specific annotation system (seam types, zipper placements, fabric direction)
+   - Visual differentiation between measurement types (customer measurements vs. production details)
+   - Search and filter capabilities based on tags
+
+5. **User Guidance System**
+   - Interactive tutorial system for first-time users
+   - Step-by-step measurement guidance with visual cues
+   - Template-based measurement patterns for common sofa types
+   - Real-time validation and suggestions for improved accuracy
+   - Video integration for complex measurement instructions
+
+6. **Collaboration Platform**
+   - Real-time sharing and viewing of measurement projects
+   - Role-based access control (customer, service team, production team)
+   - Commenting and feedback system tied to specific measurements
+   - Version history and change tracking for measurement revisions
+   - Notification system for updates and requests for additional information
+
+7. **Mobile Optimization**
+   - Responsive interface for mobile devices
+   - Camera integration for direct photo capture
+   - Touch-optimized measurement tools
+   - Offline capability for in-home measurements with later synchronization
+
+## Data Models
+
+1. **SofaProject**
+   - Project metadata (customer, date, sofa type, etc.)
+   - Reference photos collection
+   - Vector layers collection
+   - Measurement collection
+   - Version history
+   - Status tracking (draft, review, approved, in production)
+
+2. **VectorMeasurement**
+   - Vector path data
+   - Measurement value in primary unit
+   - Secondary unit conversion
+   - Measurement type (straight line, curve, circumference, etc.)
+   - Associated tags and annotations
+   - Visual styling information
+   - Creation and modification metadata
+
+3. **ProductionAnnotation**
+   - Annotation type (seam, zipper, velcro, etc.)
+   - Position and orientation data
+   - Associated measurements or vectors
+   - Production-specific instructions
+   - Priority level
+   - Visual styling information
+
+4. **TemplateDefinition**
+   - Template type (standard sofa, sectional, cushion, etc.)
+   - Required measurement definitions
+   - Default production annotations
+   - Layout specifications for PDF generation
+   - Standard views required
+
+5. **UserProfile**
+   - User role (customer, service team, production team)
+   - Access permissions
+   - Measurement preferences (default units, etc.)
+   - Notification settings
+   - Project history and access
+
+## APIs and Integrations
+
+1. **Core Excalidraw Extension**
+   - Enhanced vector drawing capabilities
+   - Custom measurement tools integration
+   - Image-vector overlay system
+
+2. **Image Processing**
+   - Image enhancement and calibration
+   - Automatic sofa edge detection (AI-assisted)
+   - Perspective correction tools
+
+3. **Measurement Calculation**
+   - Geometric calculation engines for complex shapes
+   - Unit conversion services
+   - Measurement validation and error detection
+
+4. **PDF Generation**
+   - Dynamic template rendering
+   - Production-specific markup generation
+   - Multi-view layout engine
+   - Annotation and label placement optimization
+
+5. **Cloud Storage and Sync**
+   - Secure project storage and retrieval
+   - Version control and history tracking
+   - Real-time collaboration services
+   - Cross-device synchronization
+
+6. **Mobile Device API**
+   - Camera and photo gallery integration
+   - Touch gesture handling for precise measurements
+   - Offline data caching and synchronization
+
+## Infrastructure Requirements
+
+1. **Frontend**
+   - React-based UI extending Excalidraw components
+   - Canvas-based rendering for vector precision
+   - Responsive design for desktop and mobile use
+   - Image processing capabilities in browser
+
+2. **Backend Services**
+   - User authentication and project management
+   - Secure storage for customer sofa photos
+   - Rendering services for template generation
+   - Collaboration and synchronization services
+
+3. **Storage**
+   - Project data with version control
+   - High-resolution image storage
+   - Generated template archive
+   - User and collaboration data
+
+4. **Mobile Support**
+   - Progressive Web App capabilities
+   - Camera API integration
+   - Offline functionality with sync
+   - Touch-optimized interface
+
+# Development Roadmap
+
+## Phase 1: Core Measurement Foundation (MVP)
+1. Fork and extend Excalidraw codebase with photo integration capabilities
+2. Implement basic vector-based measurement tools with dual unit system
+3. Create fundamental tagging system for sofa parts
+4. Develop simple PDF template generation for basic measurements
+5. Implement user authentication and basic project management
+6. Create introductory guidance for common measurement tasks
+7. Set up basic sharing capabilities between customers and service team
+
+## Phase 2: Production Integration
+1. Enhance measurement system with production-specific annotations
+2. Implement comprehensive tagging system for all sofa components
+3. Develop advanced template generation with multiple views
+4. Create specialized annotation tools for production requirements
+5. Implement validation rules based on measurement relationships
+6. Build collaboration features for production team feedback
+7. Develop version tracking and change history for measurement projects
+
+## Phase 3: User Experience Enhancement
+1. Implement step-by-step guided measurement wizards
+2. Create template library for common sofa types
+3. Develop AI-assisted sofa edge detection in photos
+4. Implement advanced measurement validation and suggestions
+5. Create interactive tutorials and help system
+6. Enhance mobile experience with camera integration
+7. Develop offline capabilities for in-home measurements
+
+## Phase 4: Advanced Features
+1. Implement 3D visualization of measurements
+2. Create automated cost estimation based on measurements
+3. Develop material calculation and optimization
+4. Implement advanced statistic tracking for measurement accuracy
+5. Create API for integration with production management systems
+6. Develop custom reporting for production efficiency
+7. Implement machine learning for measurement predictions and validation
+
+# Logical Dependency Chain
+1. **Foundation First**: Extend Excalidraw with photo integration and basic measurement capabilities
+2. **Measurement System**: Create accurate and flexible measurement tools before adding production features
+3. **Simple Templates**: Implement basic template generation before adding advanced production annotations
+4. **User Interface**: Focus on core functionality before adding guided wizards and advanced UX
+5. **Collaboration**: Add basic sharing before implementing advanced feedback and version tracking
+6. **Mobile Support**: Start with responsive design before adding camera integration and offline capabilities
+7. **Production Features**: Add production annotations and templates only after measurement system is solid
+
+# Risks and Mitigations
+
+## Technical Challenges
+1. **Accurate Measurement on Photos**
+   - Risk: Ensuring vector measurements precisely follow curved sofa surfaces
+   - Mitigation: Develop specialized curve-following measurement tools and calibration features
+
+2. **Unit Conversion Precision**
+   - Risk: Maintaining accuracy when converting between fractional inches and decimal centimeters
+   - Mitigation: Implement high-precision conversion algorithms with appropriate rounding rules
+
+3. **Mobile Device Limitations**
+   - Risk: Achieving sufficient precision on smaller touchscreens
+   - Mitigation: Develop touch-optimized tools with zoom and snap features
+
+## User Experience Risks
+1. **Technical Barrier for Customers**
+   - Risk: Non-technical users struggle to provide accurate measurements
+   - Mitigation: Create guided step-by-step measurement processes with visual cues and templates
+
+2. **Production Team Adoption**
+   - Risk: Production teams resist new template format
+   - Mitigation: Involve production team in template design and ensure output matches their existing workflows
+
+3. **Measurement Validation**
+   - Risk: Inaccurate measurements lead to poor-fitting covers
+   - Mitigation: Implement automatic validation against standard ranges and relationship checks
+
+## Implementation Risks
+1. **Extending Excalidraw Effectively**
+   - Risk: Modifications to Excalidraw become difficult to maintain
+   - Mitigation: Create modular extensions that minimize changes to core codebase
+
+2. **PDF Template Complexity**
+   - Risk: Templates don't capture all necessary production details
+   - Mitigation: Work closely with production team to ensure all requirements are captured
+
+3. **Mobile Performance**
+   - Risk: Complex vector operations perform poorly on mobile devices
+   - Mitigation: Optimize rendering and implement progressive enhancement
+
+# Appendix
+
+## Key Measurement Requirements
+1. Precise sofa length, width, and height measurements to 1/8" or 0.1cm
+2. Cushion dimensions and contours
+3. Armrest shape and dimensions
+4. Back cushion measurements
+5. Seam locations and types
+6. Zipper placements and lengths
+7. Material fold and stretch requirements
+8. Special features (reclining sections, curved components)
+
+## Production Template Requirements
+1. Clear measurement labels in both units
+2. Standard notation for seam types
+3. Explicit marking of zipper locations
+4. Fabric direction indicators
+5. Material type specifications
+6. Assembly sequence guidance
+7. Multiple views (front, top, sides, detail sections)
+8. Space for production notes and special instructions
+
+## User Interface Considerations
+1. Simple, clean interface focused on measurement tasks
+2. Clear visual distinction between different measurement types
+3. Intuitive tools that follow conventional drawing patterns
+4. Responsive design that works on both desktop and mobile
+5. Accessibility considerations for all users
+</PRD> 
