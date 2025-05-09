@@ -1,0 +1,107 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history for PR checks
+      
+      - name: Check PR title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types:
+            - feat
+            - fix
+            - docs
+            - style
+            - refactor
+            - perf
+            - test
+            - chore
+          requireScope: false
+      
+      - name: Label PR based on changes
+        uses: actions/labeler@v4
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yml
+      
+  dependency-review:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v3
+        with:
+          # Fail if any vulnerabilities are detected
+          fail-on-severity: moderate
+      
+  size-labeler:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Calculate PR size
+        id: size
+        run: |
+          changed_lines=$(git diff --stat ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | tail -n 1 | awk '{print $4}')
+          echo "Changed lines: $changed_lines"
+          
+          if [ $changed_lines -lt 100 ]; then
+            echo "size=small" >> $GITHUB_OUTPUT
+          elif [ $changed_lines -lt 500 ]; then
+            echo "size=medium" >> $GITHUB_OUTPUT
+          else
+            echo "size=large" >> $GITHUB_OUTPUT
+          fi
+      
+      - uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const size = '${{ steps.size.outputs.size }}';
+            const sizeLabels = {
+              'small': '📝 size: small',
+              'medium': '📘 size: medium',
+              'large': '📚 size: large'
+            };
+            
+            // Remove existing size labels
+            const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            for (const label of labels) {
+              if (label.name.includes('size:')) {
+                await github.rest.issues.removeLabel({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name
+                });
+              }
+            }
+            
+            // Add new size label
+            await github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: [sizeLabels[size]]
+            }); 

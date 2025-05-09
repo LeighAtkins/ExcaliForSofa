@@ -1,0 +1,127 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.2
+  codecov: codecov/codecov@3.2.4
+
+executors:
+  node-executor:
+    docker:
+      - image: cimg/node:18.16
+    resource_class: medium
+
+jobs:
+  build-and-test:
+    executor: node-executor
+    steps:
+      - checkout
+      
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-
+      
+      - run: 
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+      
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      
+      - run:
+          name: Check Types
+          command: yarn test:typecheck
+      
+      - run:
+          name: Lint Check
+          command: yarn test:code
+      
+      - run:
+          name: Run Tests with Coverage
+          command: yarn test:coverage
+      
+      - codecov/upload:
+          file: ./coverage/lcov.info
+      
+      - run:
+          name: Build
+          command: yarn build
+      
+      - persist_to_workspace:
+          root: .
+          paths:
+            - excalidraw-app/build
+            - excalidraw-app/dist
+            - packages/*/dist
+  
+  deploy-preview:
+    executor: node-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      
+      - run:
+          name: Install Firebase CLI
+          command: npm install -g firebase-tools
+      
+      - run:
+          name: Deploy to Firebase Preview
+          command: |
+            # Create unique preview channel name based on PR number or branch
+            PREVIEW_CHANNEL=${CIRCLE_PULL_REQUEST##*/}
+            if [ -z "$PREVIEW_CHANNEL" ]; then
+              PREVIEW_CHANNEL=${CIRCLE_BRANCH//\//-}
+            fi
+            
+            echo "Deploying to preview channel: $PREVIEW_CHANNEL"
+            firebase hosting:channel:deploy $PREVIEW_CHANNEL --token "$FIREBASE_TOKEN"
+  
+  deploy-production:
+    executor: node-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      
+      - run:
+          name: Configure AWS
+          command: |
+            mkdir -p ~/.aws
+            echo "[default]" > ~/.aws/credentials
+            echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+            echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+      
+      - run:
+          name: Deploy to Production
+          command: |
+            # This is a placeholder for actual deployment commands
+            echo "Deploying to production..."
+
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+      - build-and-test:
+          filters:
+            tags:
+              only: /.*/
+      
+      - deploy-preview:
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only: 
+                - /feature\/.*/
+                - /bugfix\/.*/
+                - develop
+      
+      - deploy-production:
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only: main 

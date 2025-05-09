@@ -1,0 +1,59 @@
+# Add 'core' label to any change in core files
+core:
+  - src/index.ts
+  - src/types/**/*
+  - src/constants/**/*
+  - tsconfig.json
+  - tsconfig.sofa.json
+  - package.json
+
+# Add 'frontend' label to any change in ui components or assets
+frontend:
+  - src/components/**/*
+  - src/hooks/**/*
+  - src/assets/**/*
+  - src/utils/ui/**/*
+  - '**/*.css'
+  - '**/*.scss'
+  - '**/*.svg'
+
+# Add 'measurement' label to any measurement-related changes
+measurement:
+  - src/utils/unitConversion.ts
+  - src/utils/validation.ts
+  - src/constants/measurements.ts
+  - src/components/measurement/**/*
+  - src/services/measurement/**/*
+
+# Add 'photo-integration' label to any photo-related changes
+photo-integration:
+  - src/components/photo/**/*
+  - src/services/image/**/*
+  - src/utils/image/**/*
+
+# Add 'pdf-export' label to any PDF template changes
+pdf-export:
+  - src/components/pdf/**/*
+  - src/services/pdf/**/*
+  - src/utils/pdf/**/*
+
+# Add 'docs' label to documentation changes
+docs:
+  - '**/*.md'
+  - docs/**/*
+  - '**/*.mdx'
+
+# Add 'tests' label to any change to test files
+tests:
+  - tests/**/*
+  - '**/*.test.ts'
+  - '**/*.test.tsx'
+  - '**/*.spec.ts'
+  - '**/*.spec.tsx'
+
+# Add 'ci' label to any changes to CI/CD configuration files
+ci:
+  - .github/workflows/**/*
+  - docker-compose.yml
+  - Dockerfile
+  - .dockerignore 

@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        
+      - name: Check types
+        run: yarn test:typecheck
+        
+      - name: Run lint
+        run: yarn test:code
+        
+      - name: Run tests
+        run: yarn test
+        
+      - name: Build application
+        run: yarn build
+
+  # Job for deploying to a preview environment on PR
+  deploy-preview:
+    needs: build
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: 'yarn'
+          
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        
+      - name: Build for preview
+        run: yarn build:preview
+        
+      # This is a placeholder for actual deployment
+      # Replace with your actual deployment steps
+      - name: Deploy to preview environment
+        run: echo "Deploying to preview environment"
+      
+      - name: Comment PR with preview URL
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = context.issue.number;
+            const previewUrl = `https://preview-${prNumber}.excaliforsofa-preview.com`;
+            github.rest.issues.createComment({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🚀 Preview deployment available at: [${previewUrl}](${previewUrl})`
+            });
+
+  # Job for deploying to production when merging to main
+  deploy-production:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: 'yarn'
+          
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        
+      - name: Build for production
+        run: yarn build
+        
+      # This is a placeholder for actual deployment
+      # Replace with your actual deployment steps
+      - name: Deploy to production
+        run: echo "Deploying to production environment" 
