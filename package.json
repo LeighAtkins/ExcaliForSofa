@@ -1,6 +1,7 @@
 {
   "private": true,
-  "name": "excalidraw-monorepo",
+  "name": "excaliforsofa",
+  "version": "0.1.0",
   "packageManager": "yarn@1.22.22",
   "workspaces": [
     "excalidraw-app",
@@ -89,6 +90,13 @@
   "dependencies": {
     "@excalidraw/excalidraw": "0.18.0",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "exif-js": "^2.3.0",
+    "fraction.js": "^4.3.0",
+    "jspdf": "^2.5.1",
+    "react-dropzone": "^14.2.3",
+    "react-image-crop": "^11.0.5",
+    "react-tooltip": "^5.25.1",
+    "zustand": "^4.5.0"
   }
 }

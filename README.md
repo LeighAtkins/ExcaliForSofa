@@ -125,3 +125,72 @@ If you like the project, you can become a sponsor at [Open Collective](https://o
 Last but not least, we're thankful to these companies for offering their services for free:
 
 [![Vercel](./.github/assets/vercel.svg)](https://vercel.com) [![Sentry](./.github/assets/sentry.svg)](https://sentry.io) [![Crowdin](./.github/assets/crowdin.svg)](https://crowdin.com)
+
+# ExcaliForSofa
+
+ExcaliForSofa is a specialized version of Excalidraw focused on creating accurate sofa measurements for custom cover production. The platform bridges the gap between non-technical customers who need to measure their sofas and professional production teams in China who create custom sofa covers.
+
+## Features
+
+- **Sofa Photo Integration**: Import and calibrate sofa photos as backgrounds for accurate tracing and measurements.
+- **Specialized Measurement Tools**: Create vector-based measurements with support for different units (inches to 1/8" and cm to 0.1cm) with seamless conversion between them.
+- **Production Template Generation**: Generate standardized PDF templates that include all necessary information for professional production teams.
+- **Measurement Tagging System**: Categorize and label different types of measurements (width, depth, height, seams, zipper locations) for clarity.
+- **Guided Measurement Process**: Step-by-step instructions for customers to ensure accurate measurements.
+- **Collaboration Tools**: Share and communicate about measurements between customers, service team, and production facilities.
+- **Mobile Compatibility**: Allow measurements to be taken on mobile devices directly in customers' homes.
+
+## Development
+
+### Prerequisites
+
+- Node.js (version 18.0.0 - 22.x.x)
+- Yarn package manager
+
+### Setup
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/ExcaliForSofa.git
+   cd ExcaliForSofa
+   ```
+
+2. Install dependencies:
+   ```
+   yarn install
+   ```
+
+3. Start the development server:
+   ```
+   yarn start
+   ```
+
+### Project Structure
+
+```
+/
+├── src/                  # Source code
+│   ├── components/       # React components
+│   ├── services/         # API and service functions
+│   ├── utils/            # Utility functions
+│   ├── hooks/            # Custom React hooks
+│   ├── constants/        # Constants and configuration
+│   ├── types/            # TypeScript types
+│   └── assets/           # Static assets
+├── docs/                 # Documentation
+│   ├── design/           # Design documents
+│   └── user-guides/      # User guides
+├── tests/                # Testing
+│   ├── unit/             # Unit tests
+│   └── integration/      # Integration tests
+├── packages/             # Monorepo packages (from Excalidraw)
+└── excalidraw-app/       # Main application code (from Excalidraw)
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Based on the [Excalidraw](https://github.com/excalidraw/excalidraw) project
