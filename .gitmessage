@@ -1,0 +1,33 @@
+# <type>(<scope>): <subject>
+# |<----  Using a Maximum Of 50 Characters  ---->|
+
+# <body>
+# |<----   Try To Limit Each Line to a Maximum Of 72 Characters   ---->|
+
+# <footer>
+
+# Type can be:
+#   feat     (new feature)
+#   fix      (bug fix)
+#   docs     (documentation changes)
+#   style    (formatting, etc; no code change)
+#   refactor (refactoring code)
+#   perf     (performance improvements)
+#   test     (adding or modifying tests)
+#   chore    (build process, tooling changes, etc)
+#
+# Scope is optional and can be anything specifying place of the commit change.
+# Examples: measurements, image-upload, pdf-export, etc.
+#
+# Body should include the motivation for the change and contrast with previous behavior.
+#
+# Footer should contain any information about Breaking Changes and reference GitHub issues
+# that this commit closes.
+#
+# Example:
+# feat(measurements): add imperial-to-metric conversion
+# 
+# Implement real-time unit conversion between imperial and metric measurements
+# with support for fractional inches and decimal centimeters.
+# 
+# Closes #123 
